@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <!-- basic stuff -->
+    <meta charset='UTF-8'>
+    <meta name="description" content="landing page">
+    <meta name="author" content="Kate Sutton">  
+    <title>NYC Energy Landing Page</title>
+    <!-- mobile metas --> 
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <!--not sure abt this one-->
+    <meta http-equiv="X-UA-Compatible" content='ie=edge'>
+    <!-- font --> 
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!--css stylesheets-->
+    <link href = "../static/css/style.css" rel = "stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css'/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+    <style>
+        /* .header {
+            background-image:url('https://photographyunfolded.com/wp-content/uploads/2018/08/so-close-yet-so-far-2400.jpg');
+            background-position: top center;
+            background-repeat:no-repeat;
+            } */
+        .for-background{
+            position: absolute;
+            width: 100vw;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            height: 100%;
+            }
+        img{
+            opacity: 0.2;
+        }
+        .container {
+            /* background-image:url('https://upload.wikimedia.org/wikipedia/commons/a/ac/NYC_-_Manhattan_-_Central-Park.jpg');
+            opacity: 0.4;
+            /* background-position: top center; */
+            background-repeat:no-repeat;
+            max-width: 1280px;
+        }
+        pre, blockquote, dl, figure, table, p, ul, ol, form {
+        margin-bottom: 2.5rem;
+        }
+        button, input, optgroup, select, textarea {
+        margin-bottom: 1rem;
+        }   
+    </style>
+</head>
+<body>
+    <!-- <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="twelve columns"><img src=></div>
+            </div>   
+        </div>
+    </div> -->
+    <div class='for-background'>
+        <img src='https://upload.wikimedia.org/wikipedia/commons/5/5e/Midtown_Manhattan_2019.jpg'>
+    </div>
+    <div class='container'>
+        <div class='row'>
+            <section class='section title'>
+                <div class='row'>
+                    <h2>NYC Building Energy Explorer</h2>
+                </div>
+            </section>
+            <section class='section section-one'>
+                <div class='row'>
+                    <div class='one-half column'>
+                        <h5>What's in the Data?</h5>
+                        <ul class='fa-ul'>
+                            <li><i class='fa-li fa fa-ruler-combined'></i><strong>Energy Intensity:</strong> Energy use from all sources per sq. ft of building area. Lower is better. Measured in kBtu/ft<sup>2</sup>.</li>
+                            <li><i class='fa-li fas fa-balance-scale'></i><strong>Energy Intensity Benchmark:</strong> Median energy intensity for a particular property type (e.g. Hospital) nationally.</li>
+                            <!-- <li><i class='fa-li fa fa-star'></i><strong>Energy Star Score:</strong> 1-100 score of energy efficiency. Higher is better.</li>
+                            <li><i class='fa-li fa fa-bolt'></i><strong>Electricity Use</strong></li>
+                            <li><i class='fa-li fa fa-burn'></i><strong>Natural Gas Use</strong></li>
+                            <li><i class='fa-li fa fa-faucet'></i><strong>District Steam Use:</strong> ConEd operates a district steam system in Manhattan from which buildings can purchase steam rather than have their own boilers.</li> -->
+                            <li><i class='fa-li fa fa-tint'></i><strong>Water Use Intensity:</strong> Water use per sq. ft. Measured in gal/ft<sup>2</sup>.</li>
+                            <li><i class='fa-li fas fa-globe-americas'></i><strong>Greenhouse Gas Emissions:</strong> Total greenhouse gas emissions measured in metric tons of CO<sub>2</sub>.<sup>2</sup>.</li>
+                        </ul> 
+                    </div>
+                    <div class='one-half column'>
+                        <h5>Greater, Greener Buildings Plan</h5>
+                        <p>In New York City, <strong>68% of greenhouse gas emissions come from buildings</strong>. 
+                            Nearly half of those emissions come from just 2% of buildings. 
+                            The 
+                            <strong> <a href="https://www1.nyc.gov/site/sustainability/our-programs/buildings.page" class="building-link">Greater, Greener Buildings Plan</a> </strong>
+                            addresses this problem. <strong>Local Law 84</strong> also requires that large building report data on energy and water use. 
+                            The law applies to municipal buildings over 10,000 sq. ft. and all buildings over 25,000 sq. ft. This app explores data for 2019.</p>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class='row'>
+                    <div class = 'one-half column'>
+                        <p><strong>App Purpose: </strong> This app compares each building's <i>energy intensity</i> to the <a href='https://portfoliomanager.energystar.gov/pdf/reference/US%20National%20Median%20Table.pdf'>national benchmark</a> for its property type. 
+                            <strong>Choose a property type</strong> to begin exploring.</p>
+                        <form action="{{ url_for('energy_viewer_type') }}" method="get">
+                            <div>
+                                <label for='prop_type'>Property Type</label>
+                                <select name='prop_type' id='prop_type' class='u-full-width'>
+                                    {% for pprop in pprops %}
+                                    <option value='{{ pprop }}'>{{ pprop }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <p>OR</p>
+                                <label for='neighborhood'>Pick A Neighborhood</label>
+                                <select name='neighborhood' id='neighborhood' class='u-full-width'>
+                                    {% for nname in nnames %}
+                                    <option value='{{ nname }}'>{{ nname }}</option>
+                                    {% endfor %}
+                                </select>
+                                <p>OR</p>
+                                <label for='borough'>Pick a Borough</label>
+                                <select name='borough' id='borough' class='u-full-width'>
+                                    {% for bborough in bboroughs %}
+                                    <option value='{{ bborough }}'>{{ bborough }}</option>
+                                    {% endfor %}
+                                </select>
+                                <br>
+                                <a href="https://data.cityofnewyork.us/City-Government/NTA-map/d3qk-pfyz" class="info-link">Find a Neighborhood</a>
+                                <br> -->
+                            </div>
+                            <input type='submit' class='button-primary' value='Go'>
+                        </form>
+                    </div>
+                    <div class='one-half column'>
+                        {{ plot_html|safe }}
+                    </div>
+                    <div class='photo-attribution'>
+                        Background Image: <a href="https://commons.wikimedia.org/wiki/File:Midtown_Manhattan_2019.jpg">CommunistSquared</a>, CC0, via Wikimedia Commons
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

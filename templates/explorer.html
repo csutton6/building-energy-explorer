@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <!-- basic stuff -->
+    <meta charset='UTF-8'>
+    <meta name="description" content="landing page">
+    <meta name="author" content="Kate Sutton">  
+    <title>NYC Energy Landing Page</title>
+    <!-- mobile metas --> 
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <!--not sure abt this one-->
+    <meta http-equiv="X-UA-Compatible" content='ie=edge'>
+    <!-- font --> 
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!--css stylesheets-->
+    <link href = "../static/css/style.css" rel = "stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css'/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+    <style>
+        .container {
+            max-width: 1280px;
+        }
+        div.scroll{
+            margin: 5px;
+            padding: 5px;
+            width: 100%;
+            height: 300px;
+            overflow: auto;
+        }
+        h6.bench{
+            font-size: 1.95rem;
+            margin-bottom:0.5rem;
+        }
+        th, td{
+            padding: 3px;
+        }
+    </style>
+</head>
+<body>
+    <section class='section explorer-title'>
+        <div class='container'>
+            <div class='row'>
+                <h2>Energy Intensity for Property Type: {{ pprop }}</h2>
+            </div>
+        </div>
+    </section>
+    <section class="section section-b">
+        <div class='container'>
+            <div class='row'>
+                <div class='one-third column sidebar'>
+                    <h6 class='bench'>Benchmark Energy Intensity: <strong>{{ benchmark }} kBtu/ft<sup>2</sup> </strong></h6>
+                    <div class='scroll'>
+                        <table>
+                            <thead>
+                                <th>Address</th>
+                                <th>Property Name</th>
+                                <th>Energy Intensity</th>
+                                <th>Water Intensity</th>
+                                <th>GHG Emissions</th>
+                            </thead>
+                            <tbody>
+                            {% for row in buildings %}
+                            <tr>
+                                {% for col in row %}
+                                <td>{{ col }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>  
+                    <div> {{ plot_html|safe }} </div>
+                </div>
+                <div class='two-thirds column map'>
+                    {{ map_html|safe }}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section section-c">
+        <div class="container">
+            <div class="row">
+                <a class="button button-primary" href="/">Select another property type</a>
+            </div>
+        </div>
+    </section>
+</body>

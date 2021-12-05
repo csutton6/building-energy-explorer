@@ -1,0 +1,13 @@
+<!-- <style>
+    h5{
+        font-size: 1.95rem;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<h5>Distribution of Energy Intensity Scores for <strong>{{ pprop }}</strong></h5> -->
+{{ div|safe }}
+{{ script|safe }}
+{% for jsfile in js_files %}
+    <script src="{{ jsfile }}"></script>
+{% endfor %}

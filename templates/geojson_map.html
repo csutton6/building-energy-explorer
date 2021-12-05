@@ -1,0 +1,118 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+	#map { position: relative; width: 100%; height: 650px;}
+    .legend {
+        background-color: #fff;
+        border-radius: 3px;
+        bottom: 30px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        padding: 10px;
+        position: absolute;
+        right: 10px;
+        z-index: 1;
+        }
+ 
+    .legend h6 {
+        margin: 0 0 0;
+        }
+ 
+    .legend div span {
+        border-radius: 50%;
+        display: inline-block;
+        height: 10px;
+        margin-right: 5px;
+        width: 10px;
+        }
+</style>
+<div id="map"></div>
+<div class="legend">
+    <h6>Energy Intensity</h6>
+    <h6>(kBtu/ft<sup>2</sup>)</h6>
+    <div><span style="background-color: #7a0177"></span>500+</div>
+    <div><span style="background-color: #ae017e"></span>400</div>
+    <div><span style="background-color: #dd3497"></span>300</div>
+    <div><span style="background-color: #f768a1"></span>200</div>
+    <div><span style="background-color: #fa9fb5"></span>100</div>
+    <div><span style="background-color: #fcc5c0"></span>0</div>
+</div>
+<script>
+    mapboxgl.accessToken = '{{ mapbox_token }}';
+    geojson = {{ geojson_str|safe }};
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v10',
+        center: [{{ center_lng }}, {{ center_lat }}],
+        zoom: 16
+    });
+    map.addControl(new mapboxgl.NavigationControl());
+    // Get map bounds
+    var coordinates = geojson.features[0].geometry.coordinates;
+    // var source_eui = geojson.feature.properties.source_eui;
+    // console.log(source_eui)
+    // var bounds = coordinates.reduce(function (bounds, coord) {
+    //         return bounds.extend(coord);
+    //     }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+    bounds = {{ bounds|safe }};
+     
+    map.fitBounds(bounds, {
+            padding: 150
+        });
+    map.on('load', function () {
+        map.addSource('energy_building', {
+            'type': 'geojson',
+            'data': geojson
+        });
+        map.addLayer({
+            'id': 'energy_building',
+            'type': 'fill',
+            'source': 'energy_building',
+            'layout': {
+            },
+            'paint': {
+                'fill-color': [
+                    'step',
+                    ['get', 'source_eui'],
+                    '#fcc5c0',
+                    100,
+                    '#fa9fb5',
+                    200,
+                    '#f768a1',
+                    300,
+                    '#dd3497',
+                    400,
+                    '#ae017e',
+                    500,
+                    '#7a0177'
+                ]
+            },
+        });
+
+        var legendEl = document.getElementsByClassName('legend');
+		// When a click event occurs on a feature in the states layer, open a popup at the
+		// location of the click, with description HTML from its properties.
+		map.on('click', 'energy_building', function (e) {
+            new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(
+                'Address: ' + e.features[0].properties.address + '<br>' + 
+                'Property Name: ' + e.features[0].properties.prop_name +'<br>'+
+                'Energy Intensity: ' + e.features[0].properties.source_eui + ' kBtu/sq.ft.' +'<br>' +
+                'Water Intensity: ' + e.features[0].properties.water_intensity+ ' gal/sq.ft.' + '<br>'+
+                'GHG Emissions: ' + e.features[0].properties.ghg_emissions + ' metric tons CO2')
+            .addTo(map);
+		});
+		 
+		// Change the cursor to a pointer when the mouse is over the states layer.
+		map.on('mouseenter', 'energy_building', function () {
+            map.getCanvas().style.cursor = 'pointer';
+		});
+		 
+		// Change it back to a pointer when it leaves.
+		map.on('mouseleave', 'energy_building', function () {
+            map.getCanvas().style.cursor = '';
+		});
+    });
+</script>
