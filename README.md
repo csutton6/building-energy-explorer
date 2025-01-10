@@ -1,5 +1,5 @@
 # New York Building Energy Explorer
-## Kate Sutton | MUSA 509: Geospatial Cloud Computing 
+## Caleb Sutton | MUSA 509: Geospatial Cloud Computing 
 
 
 ### Overview
